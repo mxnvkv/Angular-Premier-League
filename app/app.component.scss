@@ -28,6 +28,7 @@
 
 $spring-green:  #00FF85;
 $pink:          #FF2882;
+$white:         #fff;
 
 // $violet-dark:   #37003C;
 // $violet:        #4C0752;
@@ -44,4 +45,29 @@ $red-dark-1:    #CC084D;
 $red-dark-2:    #9B1041;
 $red-dark-3:    #7D123B;
 
+button {
+    padding: 10px 50px;
+    font-family: PremierLeague;
+    font-size: 15px;
+    border: none;
+    cursor: pointer;
+    background-color: $pink;
+    color: $white;
+    transition: .3s;
 
+    &:hover {
+        background-color: darken($pink, 11%);
+    }
+
+    &:active {
+        background-color: darken($pink, 15%);
+    }
+}
+
+input {
+    border: 0;
+}
+
+div {
+    display: inline-block;
+}
