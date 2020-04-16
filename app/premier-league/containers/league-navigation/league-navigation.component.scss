@@ -1,0 +1,39 @@
+@import '../../../app.component.scss';
+
+.header {
+    width: 100%;
+    height: 130px;
+    background-color: $spring-green;
+    background-image: url(../../../../img/premier_league_logo.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 35%;
+}
+
+.navigation {
+    width: 100%;
+    height: 60px;
+    background-color: #fff;
+    display: flex;  
+    flex-direction: row;
+
+    a {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 23px;
+        color: #fff;
+        text-decoration: none;
+        background-color: $violet-light-1;
+        transition: .25s;
+
+        &:hover {
+            background-color: $violet-light-2;
+        }
+
+        &.active {
+            background-color: lighten($violet-light-2, 5%);
+        }
+    }
+}

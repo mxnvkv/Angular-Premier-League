@@ -1,0 +1,47 @@
+@font-face {
+    font-family: PremierLeague;
+    src: url('../fonts/PremierLeagueW01-Bold.woff2') format('woff2');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: PremierLeague;
+    src: url('../fonts/PremierLeagueW01-BoldItalic.woff2') format('woff2');
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: PremierLeague;
+    src: url('../fonts/PremierLeagueW01-LightIt.woff2') format('woff2');
+    font-weight: lighter;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: PremierLeague;
+    src: url('../fonts/PremierLeagueW01-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+$spring-green:  #00FF85;
+$pink:          #FF2882;
+
+// $violet-dark:   #37003C;
+// $violet:        #4C0752;
+// $violet-light-1:#63146A;
+// $violet-light-2:#82288B;
+
+$violet:        #510059;
+$violet-light-1:#670070;
+$violet-light-2:#6B067D;
+$violet-light-3:#76078A;
+
+$red:           #FF005A;
+$red-dark-1:    #CC084D;
+$red-dark-2:    #9B1041;
+$red-dark-3:    #7D123B;
+
+
