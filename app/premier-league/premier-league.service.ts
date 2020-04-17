@@ -10,7 +10,7 @@ const TEAMS_API = '/api/teams';
 @Injectable()
 export class PremierLeagueService {
     constructor(private http: Http) {
-        console.log(this.http);
+        // console.log(this.http);
     }
 
     getAllTeams(): Observable<Team[]> {
@@ -22,6 +22,41 @@ export class PremierLeagueService {
     addNewTeam(team: Team): Observable<Team> {
         return this.http
             .post(TEAMS_API, team)
-            .map((response: Response) => response.json())
+            .map((response: Response) => response.json());
+    }
+
+    editTeam(team: Team): Observable<Team> {
+        return this.http
+            .put(`${TEAMS_API}/${team.id}`, team)
+            .map((response: Response) => response.json());
+    }
+
+    deleteTeam(team: Team): Observable<Team> {
+        return this.http
+            .delete(`${TEAMS_API}/${team.id}`)
+            .map((response: Response) => response.json());
+    }
+
+    returnPremierLeagueClubs() {
+        return [
+            { 
+                club: 'Liverpool',
+                logoURL: '/img/clubs/liverpool.png',
+                venue: 'Anfield',
+                city: 'Liverpool'
+            },
+            { 
+                club: 'Chelsea',
+                logoURL: '/img/clubs/chelsea.png',
+                venue: 'Stamford Bridge',
+                city: 'London'
+            },
+            { 
+                club: 'Arsenal',
+                logoURL: '/img/clubs/arsenal.png',
+                venue: 'Emirates Stadium',
+                city: 'London'
+            }
+        ];
     }
 }

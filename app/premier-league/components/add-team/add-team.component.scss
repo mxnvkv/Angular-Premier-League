@@ -30,5 +30,9 @@ form {
         height: 35px;
         padding: 5px 30px;
         display: inline-block;
+
+        &:disabled {
+            opacity: .5;
+        }
     }
 }

@@ -14,7 +14,9 @@ import { Team } from '../../models/team.interface';
                 <team-item
                     *ngFor="let item of teams; let i = index"
                     [team]="item"
-                    [teamIndex]="i"></team-item>
+                    [teamIndex]="i"
+                    (edit)="editTeam($event)"
+                    (delete)="deleteTeam($event)"></team-item>
             </div>
         </div>
     `
@@ -36,5 +38,31 @@ export class LeagueTableComponent implements OnInit {
         this.premierLeagueService
             .addNewTeam(team)
             .subscribe((data: Team) => this.teams.push(team));
+    }
+
+    editTeam(team: Team) {
+        this.premierLeagueService
+            .editTeam(team)
+            .subscribe((data: Team) => {
+                this.teams = this.teams.map((changeTeam: Team) => {
+                    if (changeTeam.id === team.id) {
+                        changeTeam = Object.assign({}, changeTeam, team);
+                    }
+
+                    return changeTeam;
+                })
+            });
+    }
+
+    deleteTeam(team: Team) {
+        this.premierLeagueService
+            .deleteTeam(team)
+            .subscribe((data: Team) => {
+                this.teams = this.teams.filter((checkTeam: Team) => {
+                    if (checkTeam.id !== team.id) {
+                        return checkTeam;
+                    }
+                })
+            });
     }
 }

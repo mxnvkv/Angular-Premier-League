@@ -1,6 +1,8 @@
 import { Component, Output, EventEmitter } from '@angular/core';
+import { v1 as uuidv1 } from 'uuid';
 import { Team } from '../../models/team.interface';
 import { Club } from '../../models/club.interface';
+import { PremierLeagueService } from '../../premier-league.service';
 
 @Component({
     selector: 'add-team',
@@ -49,6 +51,8 @@ import { Club } from '../../models/club.interface';
 })
 
 export class AddTeamComponent {
+    constructor(private premierLeagueService: PremierLeagueService) {}
+
     team: Team;
 
     @Output()
@@ -56,28 +60,11 @@ export class AddTeamComponent {
 
     submitForm(team: Team, isFormValid: boolean) {
         if (isFormValid) {
+            let uniqueID = uuidv1();
+            team = Object.assign({}, team, { id: uniqueID })
             this.add.emit(team);
         }
     }
 
-    premierLeagueTeams: Club[] = [
-        { 
-            club: 'Liverpool',
-            logoURL: '/img/clubs/liverpool.png',
-            venue: 'Anfield',
-            city: 'Liverpool'
-        },
-        { 
-            club: 'Chelsea',
-            logoURL: '/img/clubs/chelsea.png',
-            venue: 'Stamford Bridge',
-            city: 'London'
-        },
-        { 
-            club: 'Arsenal',
-            logoURL: '/img/clubs/arsenal.png',
-            venue: 'Emirates Stadium',
-            city: 'London'
-        }
-    ];
+    public premierLeagueTeams: Club[] = this.premierLeagueService.returnPremierLeagueClubs();
 }

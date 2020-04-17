@@ -20,6 +20,28 @@
         font-size: 20px;
         font-weight: bold;
     }
+
+    .team-name-input {
+        margin-left: 30px;
+    }
+
+    .buttons {
+        margin-left: auto;
+        display: flex;
+
+        button {
+            background-color: $violet;
+            margin-left: 10px;
+    
+            &:hover {
+                background-color: $violet-light-1;
+            }
+    
+            &:active {
+                background-color: $violet-light-3;
+            }
+        }
+    }
 }
 
 .red {
