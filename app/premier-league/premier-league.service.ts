@@ -40,19 +40,19 @@ export class PremierLeagueService {
     returnPremierLeagueClubs() {
         return [
             { 
-                club: 'Liverpool',
+                clubName: 'Liverpool',
                 logoURL: '/img/clubs/liverpool.png',
                 venue: 'Anfield',
                 city: 'Liverpool'
             },
             { 
-                club: 'Chelsea',
+                clubName: 'Chelsea',
                 logoURL: '/img/clubs/chelsea.png',
                 venue: 'Stamford Bridge',
                 city: 'London'
             },
             { 
-                club: 'Arsenal',
+                clubName: 'Arsenal',
                 logoURL: '/img/clubs/arsenal.png',
                 venue: 'Emirates Stadium',
                 city: 'London'

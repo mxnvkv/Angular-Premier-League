@@ -35,7 +35,7 @@ import { PremierLeagueService } from '../../premier-league.service';
                     <option
                         *ngFor="let item of premierLeagueTeams"
                         [ngValue]="item">
-                        {{ item.club }}
+                        {{ item.clubName }}
                     </option>
                 </select>
             </div>

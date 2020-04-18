@@ -33,17 +33,33 @@ import { Club } from '../../models/club.interface';
                 #name>
 
             <!-- Change club's logo -->
-            <!-- <select
+
+            <select
                 *ngIf="isEditing"
+                class="team-club-change"
                 name="club"
                 #club="ngModel"
-                [ngModel]="team?.club">
+                [ngModel]="team?.club.clubName"
+                (change)="changeTeam(club.value)">
                 Change club's logo
                 <option
                     *ngFor="let item of premierLeagueTeams"
-                    [value]="item"
-                    [selected]="item === team?.club">
-                    {{ item.club }}
+                    [ngValue]="item">
+                    {{ item.clubName }}
+                </option>
+            </select>
+
+            <!-- <select
+                name="club"
+                #club="ngModel"
+                [ngModel]="team?.club.clubName"
+                (change)="changeTeam(club.value)">
+                Change club's logo
+                <option
+                    *ngFor="let item of premierLeagueTeams"
+                    [value]="item.clubName"
+                    [selected]="item.clubName === team.club.clubName">
+                    {{ item.clubName }}
                 </option>
             </select> -->
             
@@ -93,8 +109,25 @@ export class TeamItemComponent {
         this.team.name = name;
     }
 
+    changeTeam(club) {
+        this.team.club = club;
+    }
+
     deleteTeam() {
         this.delete.emit(this.team);
     }
 }
 
+// <select
+//     *ngIf="isEditing"
+//     name="club"
+//     #club="ngModel"
+//     [ngModel]="team?.club">
+//     Change club's logo
+//     <option
+//         *ngFor="let item of premierLeagueTeams"
+//         [value]="item"
+//         [selected]="item === team?.club">
+//         {{ item.club }}
+//     </option>
+// </select> 

@@ -1,5 +1,5 @@
 export interface Club {
-    club: string,
+    clubName: string, // club -> clubName
     logoURL: string,
     venue: string,
     city: string
