@@ -33,6 +33,31 @@ import { Club } from '../../models/club.interface';
                 #name>
 
             <!-- Change club's logo -->
+            
+            <!-- 
+                Issue:
+
+                It is impossible to bind team's club
+                to then club in the options
+
+                However, if we use [value] && [selected]
+                everything works fine, except that we cannot
+                bind object to [value], only strings
+
+                <select
+                    *ngIf="isEditing"
+                    name="club"
+                    #club="ngModel"
+                    [ngModel]="team?.club">
+                    Change club's logo
+                    <option
+                        *ngFor="let item of premierLeagueTeams"
+                        [value]="item"
+                        [selected]="item === team?.club">
+                        {{ item.club }}
+                    </option>
+                </select> 
+             -->
 
             <select
                 *ngIf="isEditing"
@@ -48,20 +73,6 @@ import { Club } from '../../models/club.interface';
                     {{ item.clubName }}
                 </option>
             </select>
-
-            <!-- <select
-                name="club"
-                #club="ngModel"
-                [ngModel]="team?.club.clubName"
-                (change)="changeTeam(club.value)">
-                Change club's logo
-                <option
-                    *ngFor="let item of premierLeagueTeams"
-                    [value]="item.clubName"
-                    [selected]="item.clubName === team.club.clubName">
-                    {{ item.clubName }}
-                </option>
-            </select> -->
             
             <div class="buttons">
                 <button *ngIf="!isEditing" (click)="toggleEdit()">
@@ -118,16 +129,3 @@ export class TeamItemComponent {
     }
 }
 
-// <select
-//     *ngIf="isEditing"
-//     name="club"
-//     #club="ngModel"
-//     [ngModel]="team?.club">
-//     Change club's logo
-//     <option
-//         *ngFor="let item of premierLeagueTeams"
-//         [value]="item"
-//         [selected]="item === team?.club">
-//         {{ item.club }}
-//     </option>
-// </select> 
