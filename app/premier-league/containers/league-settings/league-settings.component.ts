@@ -10,6 +10,7 @@ import { Matchday } from '../../models/matchday.interface';
     styleUrls: ['league-settings.component.scss'],
     template: `
         <div class="settings">
+
             <div class="start-season">
                 <div class="container">
                     <h2>Start season</h2>
@@ -21,9 +22,19 @@ import { Matchday } from '../../models/matchday.interface';
                 <div class="players-bg"></div>
 
             </div>
-        </div>
 
-        <button [disabled]="!matches" (click)="deleteSchedule()">Delet table</button>
+
+            <div class="delete-all">
+                <h2>Want to start over?</h2>
+
+                <button 
+                    class="delete-button"
+                    [disabled]="!matches" 
+                    (click)="deleteSchedule()">
+                    Delete everything
+                </button>
+            </div>
+        </div>
 
         <div 
             class="schedule"
@@ -49,11 +60,9 @@ export class LeagueSettingsComponent implements OnInit {
             .getAllTeams()
             .subscribe((data: Team[]) => this.teams = data)
 
-        setTimeout(() => {
-            this.premierLeagueService
-                .getAllMatchdays()
-                .subscribe((data: Matchday[]) => this.matches = data)
-        }, 10)
+        this.premierLeagueService
+            .getAllMatchdays()
+            .subscribe((data: Matchday[]) => this.matches = data)
     }
 
     startSeason() {
@@ -66,6 +75,7 @@ export class LeagueSettingsComponent implements OnInit {
         if (this.teams.length % 2 === 0) {
 
             let swapFirstPair = true; // last team won't have all Home matches
+            let reversedHalfSeason: Matchday[] = [];
             
             // first half of the season
             for (let i = 0; i < this.teams.length - 1; i++) {
@@ -80,6 +90,14 @@ export class LeagueSettingsComponent implements OnInit {
 
                 let swapTeams = true; // for fixed H/A schedule 
                 let team1: Team, team2: Team;
+
+                // for second half of the season
+
+                let reversedMatch: Match;
+                let reversedMatchday: Matchday = {
+                    id: uuidv1(),
+                    matches: []
+                }
 
 
                 // first pair
@@ -100,7 +118,17 @@ export class LeagueSettingsComponent implements OnInit {
                     id: uuidv1()
                 }
 
+                reversedMatch = {
+                    homeTeam: team2,
+                    awayTeam: team1,
+                    venue: team2.club.venue,
+                    city: team2.club.city,
+                    id: uuidv1()
+                }
+
                 matchday.matches.push(match);
+                reversedMatchday.matches.push(reversedMatch);
+
                 swapFirstPair = !swapFirstPair;
 
                 team1 = null;
@@ -127,7 +155,19 @@ export class LeagueSettingsComponent implements OnInit {
                         id: uuidv1()
                     }
 
+                    reversedMatch = {
+                        homeTeam: team2,
+                        awayTeam: team1,
+                        venue: team2.club.venue,
+                        city: team2.club.city,
+                        id: uuidv1()
+                    }
+
                     matchday.matches.push(match);
+                    reversedMatchday.matches.push(reversedMatch);
+
+                    // console.log(reversedMatch);
+
                     swapTeams = !swapTeams;
 
                 } while(teams.length)
@@ -136,6 +176,9 @@ export class LeagueSettingsComponent implements OnInit {
                 this.premierLeagueService
                     .addMatchday(matchday)
                     .subscribe((data: Matchday) => this.matches.push(matchday))
+
+                // adding reversed matchday to array
+                reversedHalfSeason.push(reversedMatchday);
 
                 // taking last team
                 let fixedPositionTeam = this.teams.pop(); 
@@ -148,14 +191,23 @@ export class LeagueSettingsComponent implements OnInit {
                 this.teams.push(fixedPositionTeam);
             }
 
+            // adding reversed matchdays to DB
+            reversedHalfSeason.forEach((reversedMatchday: Matchday) => {
+                this.premierLeagueService
+                    .addMatchday(reversedMatchday)
+                    .subscribe((data: Matchday) => this.matches.push(reversedMatchday))
+            })
+
         } else {
             // odd length
 
+            let reversedHalfSeason: Matchday[] = [];
+
+            // first half of the season
             for (let i = 0; i < this.teams.length; i++) {
                 
                 // taking first team to create pairs
                 let restTeam = this.teams.shift();
-                console.log(restTeam);
 
                 let teams = [...this.teams];
                 let match: Match;
@@ -167,6 +219,14 @@ export class LeagueSettingsComponent implements OnInit {
                 
                 let swapTeams = true; // for fixed H/A schedule
                 let team1: Team, team2: Team;
+
+                // for second half of the season
+
+                let reversedMatch: Match;
+                let reversedMatchday: Matchday = {
+                    id: uuidv1(),
+                    matches: []
+                }
 
 
                 // creating pairs
@@ -187,14 +247,27 @@ export class LeagueSettingsComponent implements OnInit {
                         id: uuidv1()
                     }
 
+                    reversedMatch = {
+                        homeTeam: team2,
+                        awayTeam: team1,
+                        venue: team2.club.venue,
+                        city: team2.club.city,
+                        id: uuidv1()
+                    }
+
                     matchday.matches.push(match);
+                    reversedMatchday.matches.push(reversedMatch);
 
                     swapTeams = !swapTeams;
                 } while(teams.length)
 
+                // adding matchday to DB
                 this.premierLeagueService
                     .addMatchday(matchday)
                     .subscribe((data: Matchday) => this.matches.push(matchday))
+
+                // adding reversed matchday to array
+                reversedHalfSeason.push(reversedMatchday);
 
                 // returning first team
                 this.teams.unshift(restTeam);
@@ -203,12 +276,14 @@ export class LeagueSettingsComponent implements OnInit {
                 let lastTeam = this.teams.pop();
                 this.teams.unshift(lastTeam);
             }
-        }
 
-        // second half
-        setTimeout(() => {
-            this.reverseSchedule(this.matches);
-        }, 100);
+            // adding reversed matchdays to DB
+            reversedHalfSeason.forEach((reversedMatchday: Matchday) => {
+                this.premierLeagueService
+                    .addMatchday(reversedMatchday)
+                    .subscribe((data: Matchday) => this.matches.push(reversedMatchday))
+            })
+        }
     }
 
     deleteSchedule() {
@@ -218,32 +293,6 @@ export class LeagueSettingsComponent implements OnInit {
                 .subscribe((data: Matchday) => {
                     this.matches = this.matches.filter( el => el.id !== match.id )
                 });
-        })
-    }
-
-    reverseSchedule(firstHalfSeason: Matchday[]) {
-
-        firstHalfSeason.forEach((matchday: Matchday) => {
-            let reversedMatchday: Matchday = {
-                id: uuidv1(),
-                matches: []
-            };
-
-            matchday.matches.forEach((match: Match) => {
-                let reversedMatch: Match = {
-                    homeTeam: match.awayTeam,
-                    awayTeam: match.homeTeam,
-                    venue: match.awayTeam.club.venue,
-                    city: match.awayTeam.club.city,
-                    id: uuidv1()
-                };
-
-                reversedMatchday.matches.push(reversedMatch);
-            })
-
-            this.premierLeagueService
-                .addMatchday(reversedMatchday)
-                .subscribe((data: Matchday) => this.matches.push(reversedMatchday));
         })
     }
 }

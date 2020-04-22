@@ -69,6 +69,16 @@
         "city": "London"
       },
       "id": "c6a8e2e0-82e5-11ea-b164-8158847d57ed"
+    },
+    {
+      "name": "8",
+      "club": {
+        "clubName": "Everton",
+        "logoURL": "/img/clubs/everton.png",
+        "venue": "Goodison Park",
+        "city": "Liverpool"
+      },
+      "id": "9ca6de00-8490-11ea-a4d9-4f1b24d1fbd7"
     }
   ],
   "matches": []
