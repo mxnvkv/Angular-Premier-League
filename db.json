@@ -1,3 +1,75 @@
 {
-  "teams": []
+  "teams": [
+    {
+      "name": "1",
+      "club": {
+        "clubName": "Chelsea",
+        "logoURL": "/img/clubs/chelsea.png",
+        "venue": "Stamford Bridge",
+        "city": "London"
+      },
+      "id": "f15a4ea0-820b-11ea-8b94-eb7c94bb1c8c"
+    },
+    {
+      "name": "2",
+      "club": {
+        "clubName": "Tottenham",
+        "logoURL": "/img/clubs/tottenham_hotspur.png",
+        "venue": "Tottenham Hotspur Stadium",
+        "city": "London"
+      },
+      "id": "f613b800-820b-11ea-8b94-eb7c94bb1c8c"
+    },
+    {
+      "name": "3",
+      "club": {
+        "clubName": "Leicester",
+        "logoURL": "/img/clubs/leicester_city.png",
+        "venue": "King Power Stadium",
+        "city": "Leicester"
+      },
+      "id": "0467c770-820c-11ea-8b94-eb7c94bb1c8c"
+    },
+    {
+      "name": "4",
+      "club": {
+        "clubName": "Manchester United",
+        "logoURL": "/img/clubs/manchester_united.png",
+        "venue": "Old Trafford",
+        "city": "Manchester"
+      },
+      "id": "0eaba5d0-820c-11ea-8b94-eb7c94bb1c8c"
+    },
+    {
+      "name": "5",
+      "club": {
+        "clubName": "Liverpool",
+        "logoURL": "/img/clubs/liverpool.png",
+        "venue": "Anfield",
+        "city": "Liverpool"
+      },
+      "id": "1bb1ff90-820c-11ea-8b94-eb7c94bb1c8c"
+    },
+    {
+      "name": "6",
+      "club": {
+        "clubName": "Arsenal",
+        "logoURL": "/img/clubs/arsenal.png",
+        "venue": "Emirates Stadium",
+        "city": "London"
+      },
+      "id": "c248e420-82e5-11ea-b164-8158847d57ed"
+    },
+    {
+      "name": "7",
+      "club": {
+        "clubName": "West Ham",
+        "logoURL": "/img/clubs/west_ham_united.png",
+        "venue": "London Stadium",
+        "city": "London"
+      },
+      "id": "c6a8e2e0-82e5-11ea-b164-8158847d57ed"
+    }
+  ],
+  "matches": []
 }

@@ -63,9 +63,8 @@ import { Club } from '../../models/club.interface';
                 *ngIf="isEditing"
                 class="team-club-change"
                 name="club"
-                #club="ngModel"
-                [ngModel]="team?.club.clubName"
-                (change)="changeTeam(club.value)">
+                [(ngModel)]="team.club"
+                (ngModelChange)="changeTeam($event)">
                 Change club's logo
                 <option
                     *ngFor="let item of premierLeagueTeams"

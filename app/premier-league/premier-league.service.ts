@@ -4,14 +4,17 @@ import { Observable } from 'rxjs/Observable';
 import { Team } from './models/team.interface';
 
 import 'rxjs/add/operator/map';
+import { Match } from './models/match.interface';
+import { Matchday } from './models/matchday.interface';
 
 const TEAMS_API = '/api/teams';
+const MATCHES_API = '/api/matches';
 
 @Injectable()
 export class PremierLeagueService {
-    constructor(private http: Http) {
-        // console.log(this.http);
-    }
+    constructor(private http: Http) {}
+
+    // teams
 
     getAllTeams(): Observable<Team[]> {
         return this.http
@@ -34,6 +37,44 @@ export class PremierLeagueService {
     deleteTeam(team: Team): Observable<Team> {
         return this.http
             .delete(`${TEAMS_API}/${team.id}`)
+            .map((response: Response) => response.json());
+    }
+
+    // matches
+
+    // getAllMatches(): Observable<Match[]> {
+    //     return this.http
+    //         .get(MATCHES_API)
+    //         .map((response: Response) => response.json());
+    // }
+
+    getAllMatchdays(): Observable<Matchday[]> {
+        return this.http
+            .get(MATCHES_API)
+            .map((response: Response) => response.json());
+    }
+
+    // addMatch(match: Match): Observable<Match> {
+    //     return this.http
+    //         .post(MATCHES_API, match)
+    //         .map((response: Response) => response.json());
+    // }
+
+    addMatchday(matchday: Matchday): Observable<Matchday> {
+        return this.http
+            .post(MATCHES_API, matchday)
+            .map((response: Response) => response.json());
+    }
+
+    // deleteMatch(match: Match): Observable<Match> {
+    //     return this.http
+    //         .delete(`${MATCHES_API}/${match.id}`)
+    //         .map((response: Response) => response.json());
+    // }
+
+    deleteMatchday(matchday: Matchday): Observable<Matchday> {
+        return this.http
+            .delete(`${MATCHES_API}/${matchday.id}`)
             .map((response: Response) => response.json());
     }
 
