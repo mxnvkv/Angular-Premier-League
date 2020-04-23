@@ -21,6 +21,13 @@
 
 @font-face {
     font-family: PremierLeague;
+    src: url('../fonts/PremierLeagueW01-Light.woff') format('woff');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: PremierLeague;
     src: url('../fonts/PremierLeagueW01-Regular.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
@@ -30,6 +37,8 @@ $spring-green:  #00FF85;
 $pink:          #FF2882;
 $yellow:        #EAFF04;
 $white:         #fff;
+$gray:          #EFEFEF;
+$black:         #000;
 
 // $violet:        #4C0752;
 // $violet-light-1:#63146A;

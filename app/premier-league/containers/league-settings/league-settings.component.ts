@@ -36,7 +36,7 @@ import { Matchday } from '../../models/matchday.interface';
             </div>
         </div>
 
-        <div 
+        <!-- <div 
             class="schedule"
             *ngFor="let matchday of matches; let i = index">
             Matchday {{ i + 1 }}
@@ -45,15 +45,15 @@ import { Matchday } from '../../models/matchday.interface';
                 *ngFor="let match of matchday.matches">
                 {{ match.homeTeam.name }} - {{ match.awayTeam.name }}
             </div>
-        </div> 
+        </div>  -->
     `
 })
 
 export class LeagueSettingsComponent implements OnInit {
+    constructor(private premierLeagueService: PremierLeagueService) {}
+
     teams: Team[];
     matches: Matchday[];
-
-    constructor(private premierLeagueService: PremierLeagueService) {}
 
     ngOnInit() {
         this.premierLeagueService

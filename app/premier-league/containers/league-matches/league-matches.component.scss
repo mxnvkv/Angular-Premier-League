@@ -1,0 +1,17 @@
+@import '../../../app.component.scss';
+
+.matchday {
+    display: block;
+    margin-bottom: 70px;
+
+    h2 {
+        margin: 0;
+        font-weight: bold;
+        font-size: 40px;
+        margin-bottom: 40px;
+    }
+
+    match-item {
+        border-top: 1px solid $gray;
+    }
+}

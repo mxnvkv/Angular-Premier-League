@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 // components
 import { AddTeamComponent } from './components/add-team/add-team.component';
 import { TeamItemComponent } from './components/team-item/team-item.component';
+import { MatchItemComponent } from './components/match-item/match-item.component';
 
 // containers
 import { LeagueTableComponent } from './containers/league-table/league-table.component';
@@ -34,6 +35,7 @@ const routes: Routes = [
     declarations: [
         AddTeamComponent,
         TeamItemComponent,
+        MatchItemComponent,
 
         LeagueTableComponent,
         LeagueMatchesComponent,
