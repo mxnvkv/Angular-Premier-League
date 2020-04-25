@@ -5,5 +5,7 @@ export interface Match {
     awayTeam: Team,
     venue: string,
     city: string,
+    homeTeamScore?: number,
+    awayTeamScore?: number,
     id: number
 }

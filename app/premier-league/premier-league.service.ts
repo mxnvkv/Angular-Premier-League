@@ -40,7 +40,7 @@ export class PremierLeagueService {
             .map((response: Response) => response.json());
     }
 
-    // matches
+    // matchdays
 
     // getAllMatches(): Observable<Match[]> {
     //     return this.http
@@ -54,15 +54,29 @@ export class PremierLeagueService {
             .map((response: Response) => response.json());
     }
 
-    // addMatch(match: Match): Observable<Match> {
-    //     return this.http
-    //         .post(MATCHES_API, match)
-    //         .map((response: Response) => response.json());
+    // getMatchdayByMatch(matchdays: Matchday[], match: Match): Matchday {
+    //     let matchday: Matchday;
+
+    //     matchdays.forEach((matchdayToCheck: Matchday) => {
+    //         matchdayToCheck.matches.forEach((matchToCheck: Match) => {
+    //             if (matchToCheck.id === match.id) {
+    //                 matchday = matchdayToCheck;
+    //             }
+    //         })
+    //     })
+
+    //     return matchday;
     // }
 
     addMatchday(matchday: Matchday): Observable<Matchday> {
         return this.http
             .post(MATCHES_API, matchday)
+            .map((response: Response) => response.json());
+    }
+
+    editMatchday(matchday: Matchday): Observable<Matchday> {
+        return this.http
+            .put(`${MATCHES_API}/${matchday.id}`, matchday)
             .map((response: Response) => response.json());
     }
 
@@ -75,6 +89,14 @@ export class PremierLeagueService {
     deleteMatchday(matchday: Matchday): Observable<Matchday> {
         return this.http
             .delete(`${MATCHES_API}/${matchday.id}`)
+            .map((response: Response) => response.json());
+    }
+
+    // matches
+
+    editMatch(match: Match): Observable<Match> {
+        return this.http
+            .put(`${MATCHES_API}/${match.id}`, match)
             .map((response: Response) => response.json());
     }
 
