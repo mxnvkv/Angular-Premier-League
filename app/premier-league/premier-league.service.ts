@@ -54,19 +54,11 @@ export class PremierLeagueService {
             .map((response: Response) => response.json());
     }
 
-    // getMatchdayByMatch(matchdays: Matchday[], match: Match): Matchday {
-    //     let matchday: Matchday;
-
-    //     matchdays.forEach((matchdayToCheck: Matchday) => {
-    //         matchdayToCheck.matches.forEach((matchToCheck: Match) => {
-    //             if (matchToCheck.id === match.id) {
-    //                 matchday = matchdayToCheck;
-    //             }
-    //         })
-    //     })
-
-    //     return matchday;
-    // }
+    getMatchday(matchday: Matchday): Observable<Matchday> {
+        return this.http
+            .get(`${MATCHES_API}/${matchday.id}`)
+            .map((response: Response) => response.json());
+    }
 
     addMatchday(matchday: Matchday): Observable<Matchday> {
         return this.http

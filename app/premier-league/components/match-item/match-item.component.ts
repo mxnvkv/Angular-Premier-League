@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Match } from '../../models/match.interface';
 import { Matchday } from '../../models/matchday.interface';
+import { PremierLeagueService } from '../../premier-league.service';
 
 @Component({
     selector: 'match-item',
@@ -87,14 +88,14 @@ import { Matchday } from '../../models/matchday.interface';
             </div>
 
             <button 
-                *ngIf="!settingScore"
+                *ngIf="!settingScore && !match.homeTeamScore && !match.awayTeamScore"
                 class="set-score"
                 (click)="toggleSettingScore()">
                 Set score
             </button>
 
             <button 
-                *ngIf="settingScore"
+                *ngIf="settingScore && !match.homeTeamScore && !match.awayTeamScore"
                 type="submit"
                 class="set-score"
                 [disabled]="
@@ -109,6 +110,8 @@ import { Matchday } from '../../models/matchday.interface';
 })
 
 export class MatchItemComponent {
+    constructor(private premierLeagueService: PremierLeagueService) {}
+
     @Input()
     match: Match;
 
@@ -121,11 +124,14 @@ export class MatchItemComponent {
     @Input()
     teamAmount: number;
 
-    @Output()
-    submitScore: EventEmitter<Match> = new EventEmitter<Match>();
+    // @Output()
+    // submitScore: EventEmitter<Match> = new EventEmitter<Match>();
+
+    // @Output()
+    // getMatchday: EventEmitter<Matchday> = new EventEmitter<Matchday>();
 
     @Output()
-    getMatchday: EventEmitter<Matchday> = new EventEmitter<Matchday>();
+    editedMatchday: EventEmitter<Matchday> = new EventEmitter<Matchday>();
 
     settingScore: boolean = false;
     submittedScore: Match = {...this.match};
@@ -142,8 +148,20 @@ export class MatchItemComponent {
         if (this.submittedScore.homeTeamScore && this.submittedScore.awayTeamScore) {
             this.match = { ...this.match, ...this.submittedScore };
 
-            this.submitScore.emit(this.match);
-            this.getMatchday.emit(this.matchday);
+            this.matchday.matches = this.matchday.matches.map((el: Match) => {
+                if (el.id === this.match.id) {
+                    el = Object.assign({}, el, this.match);
+                }
+
+                return el;
+            })
+
+            // console.log(this.matchday);
+
+            this.editedMatchday.emit(this.matchday);
+
+            // this.submitScore.emit(this.match);
+            // this.getMatchday.emit(this.matchday);
         }
     }
 

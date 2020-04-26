@@ -19,8 +19,7 @@ import { Match } from '../../models/match.interface';
                 [matchday]="matchday"
                 [teamIndex]="i"
                 [teamAmount]="c"
-                (submitScore)="submitScore($event)"
-                (getMatchday)="getMatchday($event)">
+                (editedMatchday)="editMatchday($event)">
             </match-item>
         </div>
     `
@@ -38,59 +37,41 @@ export class LeagueMatchesComponent implements OnInit{
             .subscribe((data: Matchday[]) => this.matches = data);
     }
 
-    submitScore(match: Match) {
+    editMatchday(matchday: Matchday) {
         this.premierLeagueService
-            .editMatch(match)
-            .subscribe((data: Match) => {
-                this.matches.forEach((matchdayToCheck: Matchday) => {
-                    matchdayToCheck.matches.forEach((matchToCheck: Match) => {
-                        if (matchdayToCheck.id === match.id) {
-                            matchToCheck = Object.assign({}, matchToCheck, match);
-                        }
-                    })
+            .editMatchday(matchday)
+            .subscribe((data: Matchday) => {
+                this.matches = this.matches.map((el: Matchday) => {
+                    if (el.id === matchday.id) {
+                        el = Object.assign({}, el, matchday);
+                    }
+
+                    return el;
                 })
             })
     }
 
+    submitScore(match: Match) {
+        // setTimeout(() => {
+        //     this.premierLeagueService
+        //         .editMatchday(this.currentMatchday)
+        //         .subscribe((data: Matchday) => {
+
+        //             this.matches = this.matches.map((el: Matchday) => {
+        //                 if (el.id === this.currentMatchday.id) {
+        //                     el.matches = el.matches.map((m: Match) => {
+        //                         m.homeTeam.name = 'test';
+        //                         return m;
+        //                     })
+        //                 }
+        //                 return el;
+        //             })
+                    
+        //         });
+        // }, 100)
+    }
+
     getMatchday(matchday: Matchday) {
-        console.log(matchday);
-        this.currentMatchday = matchday;
+        // this.currentMatchday = matchday;
     }
 }
-
-// this.premierLeagueService
-        //     .editMatch(match, this.premierLeagueService.getMatchdayByMatch(this.matches, match) )
-        //     .subscribe((data: Match) => {
-        //         this.matches.forEach((matchday: Matchday) => {
-        //             matchday.matches.forEach((matchToCheck: Match) => {
-        //                 if (matchToCheck.id === match.id) {
-        //                     matchToCheck = Object.assign({}, matchToCheck, match);
-        //                 }
-
-        //                 return matchToCheck;
-        //             }) 
-        //         })
-        //     })
-
-    //     this.matches.forEach((matchdayToCheck: Matchday) => {
-    //         matchdayToCheck.matches.forEach((matchToCheck: Match) => {
-    //             if (matchToCheck.id === match.id) {
-    //                 matchToCheck = Object.assign({}, matchToCheck, match);
-    //             }
-
-    //             return matchdayToCheck;
-    //         })
-    //     })
-
-    //    setTimeout(() => {
-    //     this.premierLeagueService
-    //         .editMatchday(this.currentMatchday)
-    //         .subscribe((data: Matchday) => {
-    //             this.matches.forEach((matchdayToCheck: Matchday) => {
-    //                 if (matchdayToCheck.id = this.currentMatchday.id) {
-    //                     matchdayToCheck = Object.assign({}, matchdayToCheck, this.currentMatchday);
-    //                 }
-    //             })
-    //         })
-
-    //    }, 1000);
