@@ -1,7 +1,8 @@
 @import '../../../app.component.scss';
 
-.league-table {
+.league-teams {
     width: 100%;
+    z-index: 1;
     
     header {
         background-color: $violet-light-1;
@@ -11,14 +12,76 @@
 
     .team-list {
         width: 100%;
-        // background-color: $white;
+    }
+}
+
+.league-table {
+    z-index: 2;
+    width: 100%;
+    height: auto;
+
+    .table, th, td {
+        border-collapse: collapse;
     }
 
-    // .add-team {
-    //     width: 250px;
-    //     height: 50px;
-    //     font-size: 18px;
-    //     display: block;
-    //     margin: 50px auto 0;
-    // }
+    .table {
+        width: 100%;
+        font-weight: lighter;
+        // table-layout: fixed;
+
+        th {
+            // border: 1px solid $white;
+            background-color: $violet-light-1;
+            height: 60px;
+        }
+
+        td {
+            padding: 0;
+            height: 70px;
+            text-align: center;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+        .teams {
+            height: 50px;
+        }
+
+        .club {
+            width: 350px;
+        }
+
+        .club-td {
+            display: flex;
+            align-items: center;
+
+            .club-name {
+                margin-left: 20px;
+                font-weight: bold;
+            }
+
+            .club-logo {
+                width: 50px;
+                height: 50px;
+                // border: 1px solid $black;
+                background-repeat: no-repeat;
+                background-size: 70%;
+                background-position: center;
+            }
+        }
+    }
+}
+
+.do-not-display {
+    display: none;
+}
+
+.red {
+    background-color: $red;
+}
+
+.dark-red {
+    background-color: $red-dark-1;
 }

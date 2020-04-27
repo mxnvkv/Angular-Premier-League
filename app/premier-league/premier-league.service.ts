@@ -6,13 +6,16 @@ import { Team } from './models/team.interface';
 import 'rxjs/add/operator/map';
 import { Match } from './models/match.interface';
 import { Matchday } from './models/matchday.interface';
+import { Settings } from './models/settings.interface';
 
 const TEAMS_API = '/api/teams';
 const MATCHES_API = '/api/matches';
+const SETTINGS_API = '/api/settings';
 
 @Injectable()
 export class PremierLeagueService {
     constructor(private http: Http) {}
+
 
     // teams
 
@@ -40,13 +43,8 @@ export class PremierLeagueService {
             .map((response: Response) => response.json());
     }
 
-    // matchdays
 
-    // getAllMatches(): Observable<Match[]> {
-    //     return this.http
-    //         .get(MATCHES_API)
-    //         .map((response: Response) => response.json());
-    // }
+    // matchdays
 
     getAllMatchdays(): Observable<Matchday[]> {
         return this.http
@@ -72,23 +70,33 @@ export class PremierLeagueService {
             .map((response: Response) => response.json());
     }
 
-    // deleteMatch(match: Match): Observable<Match> {
-    //     return this.http
-    //         .delete(`${MATCHES_API}/${match.id}`)
-    //         .map((response: Response) => response.json());
-    // }
-
     deleteMatchday(matchday: Matchday): Observable<Matchday> {
         return this.http
             .delete(`${MATCHES_API}/${matchday.id}`)
             .map((response: Response) => response.json());
     }
 
+
     // matches
 
     editMatch(match: Match): Observable<Match> {
         return this.http
             .put(`${MATCHES_API}/${match.id}`, match)
+            .map((response: Response) => response.json());
+    }
+
+
+    // other
+
+    getSettings(): Observable<Settings> {
+        return this.http
+            .get(`${SETTINGS_API}/1`)
+            .map((response: Response) => response.json());
+    }
+
+    editSettings(settings: Settings): Observable<Settings> {
+        return this.http
+            .put(`${SETTINGS_API}/1`, settings)
             .map((response: Response) => response.json());
     }
 

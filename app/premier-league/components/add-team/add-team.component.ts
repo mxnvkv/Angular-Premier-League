@@ -61,6 +61,18 @@ export class AddTeamComponent {
     submitForm(team: Team, isFormValid: boolean) {
         if (isFormValid) {
             let uniqueID = uuidv1();
+
+            team = {
+                ...team,
+                gamesPlayed: 0,
+                gamesWon: 0,
+                gamesDrawn: 0,
+                gamesLost: 0,
+                goalsScored: 0,
+                goalsConceded: 0,
+                points: 0
+            }
+
             team = Object.assign({}, team, { id: uniqueID })
             this.add.emit(team);
         }

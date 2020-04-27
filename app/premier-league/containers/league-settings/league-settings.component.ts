@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { PremierLeagueService } from '../../premier-league.service';
 import { v1 as uuidv1 } from 'uuid';
 import { Team } from '../../models/team.interface';
 import { Match } from '../../models/match.interface';
 import { Matchday } from '../../models/matchday.interface';
+import { Settings } from '../../models/settings.interface';
 
 @Component({
     selector: 'league-settings',
@@ -54,6 +55,7 @@ export class LeagueSettingsComponent implements OnInit {
 
     teams: Team[];
     matches: Matchday[];
+    hasSeasonStarted: Settings;
 
     ngOnInit() {
         this.premierLeagueService
@@ -63,6 +65,10 @@ export class LeagueSettingsComponent implements OnInit {
         this.premierLeagueService
             .getAllMatchdays()
             .subscribe((data: Matchday[]) => this.matches = data)
+
+        this.premierLeagueService
+            .getSettings()
+            .subscribe((data: Settings) => this.hasSeasonStarted = data);
     }
 
     startSeason() {
@@ -284,6 +290,12 @@ export class LeagueSettingsComponent implements OnInit {
                     .subscribe((data: Matchday) => this.matches.push(reversedMatchday))
             })
         }
+
+        this.hasSeasonStarted.hasSeasonStarted = true;
+
+        this.premierLeagueService
+            .editSettings(this.hasSeasonStarted)
+            .subscribe((data: Settings) => {});
     }
 
     deleteSchedule() {
@@ -294,5 +306,11 @@ export class LeagueSettingsComponent implements OnInit {
                     this.matches = this.matches.filter( el => el.id !== match.id )
                 });
         })
+
+        this.hasSeasonStarted.hasSeasonStarted = false;
+
+        this.premierLeagueService
+            .editSettings(this.hasSeasonStarted)
+            .subscribe((data: Settings) => {});
     }
 }
