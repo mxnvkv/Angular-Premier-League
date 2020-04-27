@@ -1,8 +1,8 @@
 import { Team } from "./team.interface";
 
 export interface Match {
-    homeTeam: Team,
-    awayTeam: Team,
+    homeTeamID: number,
+    awayTeamID: number,
     venue: string,
     city: string,
     homeTeamScore?: number,

@@ -1,7 +1,8 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { Match } from '../../models/match.interface';
 import { Matchday } from '../../models/matchday.interface';
 import { PremierLeagueService } from '../../premier-league.service';
+import { Team } from '../../models/team.interface';
 
 @Component({
     selector: 'match-item',
@@ -17,12 +18,12 @@ import { PremierLeagueService } from '../../premier-league.service';
             <!-- home team -->
             <div class="team">
                 <div class="team-name home-name">
-                    {{ match.homeTeam.name }}
+                    {{ homeTeam?.name }}
                 </div>
 
                 <div 
                     class="team-club-logo"
-                    [style.background-image]="'url(' + match.homeTeam.club.logoURL + ')'"></div>
+                    [style.background-image]="'url(' + homeTeam?.club.logoURL + ')'"></div>
             </div>
 
             <!-- displaying score -->
@@ -68,10 +69,10 @@ import { PremierLeagueService } from '../../premier-league.service';
             <div class="team">
                 <div 
                     class="team-club-logo"
-                    [style.background-image]="'url(' + match.awayTeam.club.logoURL + ')'"></div>
+                    [style.background-image]="'url(' + awayTeam?.club.logoURL + ')'"></div>
 
                 <span class="team-name away-name">
-                    {{ match.awayTeam.name }}
+                    {{ awayTeam?.name }}
                 </span>
             </div>
 
@@ -79,11 +80,11 @@ import { PremierLeagueService } from '../../premier-league.service';
             <div class="stadium">
                 <div class="stadium-icon"></div>
 
-                {{ match.homeTeam.club.venue }},
+                {{ homeTeam?.club.venue }},
 
                 <span class="city">
                     &nbsp;
-                    {{ match.homeTeam.club.city }}
+                    {{ homeTeam?.club.city }}
                 </span>
             </div>
 
@@ -109,8 +110,19 @@ import { PremierLeagueService } from '../../premier-league.service';
     `
 })
 
-export class MatchItemComponent {
+export class MatchItemComponent implements OnInit {
     constructor(private premierLeagueService: PremierLeagueService) {}
+
+    ngOnInit() {
+        this.premierLeagueService
+            .getAllTeams()
+            .subscribe((data: Team[]) => {
+                this.teams = data;
+
+                this.homeTeam = this.teams.filter((team: Team) => team.id === this.match.homeTeamID)[0];
+                this.awayTeam = this.teams.filter((team: Team) => team.id === this.match.awayTeamID)[0];
+            });
+    }
 
     @Input()
     match: Match;
@@ -124,17 +136,15 @@ export class MatchItemComponent {
     @Input()
     teamAmount: number;
 
-    // @Output()
-    // submitScore: EventEmitter<Match> = new EventEmitter<Match>();
-
-    // @Output()
-    // getMatchday: EventEmitter<Matchday> = new EventEmitter<Matchday>();
-
     @Output()
     editedMatchday: EventEmitter<Matchday> = new EventEmitter<Matchday>();
 
+    teams: Team[];
+    homeTeam: Team;
+    awayTeam: Team;
     settingScore: boolean = false;
     submittedScore: Match = {...this.match};
+
 
     setHomeScore(score: number) {
         this.submittedScore.homeTeamScore = score;
@@ -148,6 +158,8 @@ export class MatchItemComponent {
         if (this.submittedScore.homeTeamScore && this.submittedScore.awayTeamScore) {
             this.match = { ...this.match, ...this.submittedScore };
 
+            this.updateTeams();
+
             this.matchday.matches = this.matchday.matches.map((el: Match) => {
                 if (el.id === this.match.id) {
                     el = Object.assign({}, el, this.match);
@@ -156,16 +168,146 @@ export class MatchItemComponent {
                 return el;
             })
 
-            // console.log(this.matchday);
-
             this.editedMatchday.emit(this.matchday);
-
-            // this.submitScore.emit(this.match);
-            // this.getMatchday.emit(this.matchday);
         }
     }
 
     toggleSettingScore() {
         this.settingScore = !this.settingScore;
     }
+
+    updateTeams() {
+        this.homeTeam.gamesPlayed++;
+        this.awayTeam.gamesPlayed++;
+
+        // result
+
+        if (this.match.homeTeamScore > this.match.awayTeamScore) {
+
+            this.homeTeam.gamesWon++;
+            this.awayTeam.gamesLost++;
+
+            this.homeTeam.points += 3;
+
+        } else if (this.match.homeTeamScore === this.match.awayTeamScore) {
+
+            this.homeTeam.gamesDrawn++;
+            this.awayTeam.gamesDrawn++;
+
+            this.homeTeam.points++;
+            this.awayTeam.points++;
+
+        } else {
+
+            this.homeTeam.gamesLost++;
+            this.awayTeam.gamesWon++;
+
+            this.awayTeam.points += 3;
+
+        }
+
+        // goals
+
+        this.homeTeam.goalsScored += +this.match.homeTeamScore;
+        this.homeTeam.goalsConceded += +this.match.awayTeamScore;
+
+        this.awayTeam.goalsScored += +this.match.awayTeamScore;
+        this.awayTeam.goalsConceded += +this.match.homeTeamScore;
+
+        this.premierLeagueService
+            .editTeam(this.homeTeam)
+            .subscribe((data: Team) => {
+                this.teams = this.teams.map((team: Team) => {
+                    if (team.id === this.homeTeam.id) {
+                        team = Object.assign({}, team, this.homeTeam);
+                    }
+                    return team;
+                })
+            })
+
+        this.premierLeagueService
+            .editTeam(this.awayTeam)
+            .subscribe((data: Team) => {
+                this.teams = this.teams.map((team: Team) => {
+                    if (team.id === this.awayTeam.id) {
+                        team = Object.assign({}, team, this.awayTeam);
+                    }
+                    return team;
+                })
+            })
+    }
+
+    // updateMatchTeams(homeTeam: Team, awayTeam: Team, match: Match) {
+    //     this.teams.forEach((team: Team) => {
+    //         if (team.id === homeTeam.id) {
+    //             this.homeTeam = homeTeam;
+    //         }
+
+    //         if (team.id === awayTeam.id) {
+    //             this.awayTeam = awayTeam;
+    //         }
+    //     })
+
+    //     let homeTeamScore = +match.homeTeamScore;
+    //     let awayTeamScore = +match.awayTeamScore;
+
+    //     this.homeTeam.gamesPlayed++;
+    //     this.awayTeam.gamesPlayed++;
+
+    //     // result
+
+    //     if (homeTeamScore > awayTeamScore) {
+
+    //         this.homeTeam.gamesWon++;
+    //         this.awayTeam.gamesLost++;
+
+    //         this.homeTeam.points += 3;
+
+    //     } else if (homeTeamScore === awayTeamScore) {
+
+    //         this.homeTeam.gamesDrawn++;
+    //         this.awayTeam.gamesDrawn++;
+
+    //         this.homeTeam.points++;
+    //         this.awayTeam.points++;
+
+    //     } else {
+
+    //         this.homeTeam.gamesLost++;
+    //         this.awayTeam.gamesWon++;
+
+    //         this.awayTeam.points += 3;
+
+    //     }
+
+    //     // goals
+
+    //     this.homeTeam.goalsScored += homeTeamScore;
+    //     this.homeTeam.goalsConceded += awayTeamScore;
+
+    //     this.awayTeam.goalsScored += awayTeamScore;
+    //     this.awayTeam.goalsConceded += homeTeamScore;
+
+    //     this.premierLeagueService
+    //         .editTeam(this.homeTeam)
+    //         .subscribe((data: Team) => {
+    //             this.teams = this.teams.map((team: Team) => {
+    //                 if (team.id === this.homeTeam.id) {
+    //                     team = Object.assign({}, team, this.homeTeam);
+    //                 }
+    //                 return team;
+    //             })
+    //         })
+
+    //     this.premierLeagueService
+    //         .editTeam(this.awayTeam)
+    //         .subscribe((data: Team) => {
+    //             this.teams = this.teams.map((team: Team) => {
+    //                 if (team.id === this.awayTeam.id) {
+    //                     team = Object.assign({}, team, this.awayTeam);
+    //                 }
+    //                 return team;
+    //             })
+    //         })
+    // }
 }

@@ -31,7 +31,7 @@ import { Settings } from '../../models/settings.interface';
                 <button 
                     class="delete-button"
                     [disabled]="!matches" 
-                    (click)="deleteSchedule()">
+                    (click)="deleteEverything()">
                     Delete everything
                 </button>
             </div>
@@ -72,7 +72,7 @@ export class LeagueSettingsComponent implements OnInit {
     }
 
     startSeason() {
-        // this.teams = this.teams.sort(() => Math.random() - 0.5);
+        this.teams = this.teams.sort(() => Math.random() - 0.5);
 
         // we will use round robin algorithm
         // to create schedule for the season
@@ -117,16 +117,16 @@ export class LeagueSettingsComponent implements OnInit {
                 }
 
                 match = {
-                    homeTeam: team1,
-                    awayTeam: team2,
+                    homeTeamID: team1.id,
+                    awayTeamID: team2.id,
                     venue: team1.club.venue,
                     city: team1.club.city,
                     id: uuidv1()
                 }
 
                 reversedMatch = {
-                    homeTeam: team2,
-                    awayTeam: team1,
+                    homeTeamID: team2.id,
+                    awayTeamID: team1.id,
                     venue: team2.club.venue,
                     city: team2.club.city,
                     id: uuidv1()
@@ -154,16 +154,16 @@ export class LeagueSettingsComponent implements OnInit {
                     }
 
                     match = {
-                        homeTeam: team1,
-                        awayTeam: team2,
+                        homeTeamID: team1.id,
+                        awayTeamID: team2.id,
                         venue: team1.club.venue,
                         city: team1.club.city,
                         id: uuidv1()
                     }
 
                     reversedMatch = {
-                        homeTeam: team2,
-                        awayTeam: team1,
+                        homeTeamID: team2.id,
+                        awayTeamID: team1.id,
                         venue: team2.club.venue,
                         city: team2.club.city,
                         id: uuidv1()
@@ -246,16 +246,16 @@ export class LeagueSettingsComponent implements OnInit {
                     }
 
                     match = {
-                        homeTeam: team1,
-                        awayTeam: team2,
+                        homeTeamID: team1.id,
+                        awayTeamID: team2.id,
                         venue: team1.club.venue,
                         city: team1.club.city,
                         id: uuidv1()
                     }
 
                     reversedMatch = {
-                        homeTeam: team2,
-                        awayTeam: team1,
+                        homeTeamID: team2.id,
+                        awayTeamID: team1.id,
                         venue: team2.club.venue,
                         city: team2.club.city,
                         id: uuidv1()
@@ -298,12 +298,20 @@ export class LeagueSettingsComponent implements OnInit {
             .subscribe((data: Settings) => {});
     }
 
-    deleteSchedule() {
-        this.matches.forEach( match => {
+    deleteEverything() {
+        this.matches.forEach((matchday: Matchday) => {
             this.premierLeagueService
-                .deleteMatchday(match)
+                .deleteMatchday(matchday)
                 .subscribe((data: Matchday) => {
-                    this.matches = this.matches.filter( el => el.id !== match.id )
+                    this.matches = this.matches.filter((el: Matchday) => el.id !== matchday.id );
+                });
+        })
+
+        this.teams.forEach((team: Team) => {
+            this.premierLeagueService
+                .deleteTeam(team)
+                .subscribe((data: Team) => {
+                    this.teams = this.teams.filter((el: Team) => el.id !== team.id );
                 });
         })
 

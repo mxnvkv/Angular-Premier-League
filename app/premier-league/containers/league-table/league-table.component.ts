@@ -65,7 +65,10 @@ import { Settings } from '../../models/settings.interface';
                     <td> {{ team.gamesLost }} </td>
                     <td> {{ team.goalsScored }} </td>
                     <td> {{ team.goalsConceded }} </td>
-                    <td> {{ team.goalsScored - team.goalsConceded }} </td>
+                    <td> 
+                        {{ (team.goalsScored - team.goalsConceded) > 0 ? '+' : ''}}
+                        {{ team.goalsScored - team.goalsConceded }} 
+                    </td>
                     <td class="bold"> {{ team.points }} </td>
                 </tr>
             </table>
