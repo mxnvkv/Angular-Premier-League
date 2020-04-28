@@ -1,9 +1,3 @@
-<a href="https://ultimatecourses.com" target="_blank"><img src="https://ultimatecourses.com/static/banners/ultimate-angular-leader-old.svg"></a>
-
-# Angular Fundamentals Seed
-
-> This is the seed project for the [Angular Fundamentals](https://ultimatecourses.com/learn/angular-fundamentals) course by [Todd Motto](https://twitter.com/toddmotto).
-
 ## Project Setup and Tooling
 
 ### Tools
