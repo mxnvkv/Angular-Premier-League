@@ -43,7 +43,7 @@ import { Settings } from '../../models/settings.interface';
                     <th>Points</th>
                 </tr>
                 <tr
-                    *ngFor="let team of teams; let i = index"
+                    *ngFor="let team of sortedTeams; let i = index"
                     class="teams"
                     [ngClass]="{
                         'red': i % 2 === 0,
@@ -66,8 +66,9 @@ import { Settings } from '../../models/settings.interface';
                     <td> {{ team.goalsScored }} </td>
                     <td> {{ team.goalsConceded }} </td>
                     <td> 
-                        {{ (team.goalsScored - team.goalsConceded) > 0 ? '+' : ''}}
-                        {{ team.goalsScored - team.goalsConceded }} 
+                        {{ 
+                            (team.goalsScored - team.goalsConceded) > 0 ? '+' : ''
+                        }}{{ team.goalsScored - team.goalsConceded }} 
                     </td>
                     <td class="bold"> {{ team.points }} </td>
                 </tr>
@@ -78,6 +79,7 @@ import { Settings } from '../../models/settings.interface';
 
 export class LeagueTableComponent implements OnInit {
     teams: Team[];
+    sortedTeams: Team[];
     team: Team;
     seasonSettings: Settings;
 
@@ -87,6 +89,34 @@ export class LeagueTableComponent implements OnInit {
         this.premierLeagueService
             .getAllTeams()
             .subscribe((data: Team[]) => this.teams = data);
+
+        this.premierLeagueService
+            .getAllTeams()
+            .subscribe((data: Team[]) => {
+                this.sortedTeams = data;
+
+                this.sortedTeams.sort((a: Team, b: Team) => {
+                    return b.points - a.points;
+                })
+
+                this.sortedTeams.sort((a: Team, b: Team) => {
+                    if (b.points === a.points) {
+                        return (b.goalsScored - b.goalsConceded) - (a.goalsScored - a.goalsConceded);
+                    }
+                })
+
+                this.sortedTeams.sort((a: Team, b: Team) => {
+                    if (b.points === a.points) {
+                        if (b.goalsScored - b.goalsConceded === a.goalsScored - a.goalsConceded) {
+                            return b.goalsScored - a.goalsScored;
+                        }
+                    }
+                })
+            })
+
+        this.premierLeagueService
+            .getAllTeams()
+            .subscribe((data: Team[]) => this.teams = data);    
 
         this.premierLeagueService
             .getSettings()

@@ -4,6 +4,10 @@ import { Observable } from 'rxjs/Observable';
 import { Team } from './models/team.interface';
 
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/throw';
+import { forkJoin } from 'rxjs/observable/forkJoin';  
+
 import { Match } from './models/match.interface';
 import { Matchday } from './models/matchday.interface';
 import { Settings } from './models/settings.interface';
@@ -22,25 +26,29 @@ export class PremierLeagueService {
     getAllTeams(): Observable<Team[]> {
         return this.http
             .get(TEAMS_API)
-            .map((response: Response) => response.json());
+            .map((response: Response) => response.json())
+            .catch((error: any) => Observable.throw(error.json()));
     }
 
     addNewTeam(team: Team): Observable<Team> {
         return this.http
             .post(TEAMS_API, team)
-            .map((response: Response) => response.json());
+            .map((response: Response) => response.json())
+            .catch((error: any) => Observable.throw(error.json()));
     }
 
     editTeam(team: Team): Observable<Team> {
         return this.http
             .put(`${TEAMS_API}/${team.id}`, team)
-            .map((response: Response) => response.json());
+            .map((response: Response) => response.json())
+            .catch((error: any) => Observable.throw(error.json()));
     }
 
     deleteTeam(team: Team): Observable<Team> {
         return this.http
             .delete(`${TEAMS_API}/${team.id}`)
-            .map((response: Response) => response.json());
+            .map((response: Response) => response.json())
+            .catch((error: any) => Observable.throw(error.json()));
     }
 
 
@@ -49,31 +57,36 @@ export class PremierLeagueService {
     getAllMatchdays(): Observable<Matchday[]> {
         return this.http
             .get(MATCHES_API)
-            .map((response: Response) => response.json());
+            .map((response: Response) => response.json())
+            .catch((error: any) => Observable.throw(error.json()));
     }
 
     getMatchday(matchday: Matchday): Observable<Matchday> {
         return this.http
             .get(`${MATCHES_API}/${matchday.id}`)
-            .map((response: Response) => response.json());
+            .map((response: Response) => response.json())
+            .catch((error: any) => Observable.throw(error.json()));
     }
 
     addMatchday(matchday: Matchday): Observable<Matchday> {
         return this.http
             .post(MATCHES_API, matchday)
-            .map((response: Response) => response.json());
+            .map((response: Response) => response.json())
+            .catch((error: any) => Observable.throw(error.json()));
     }
 
     editMatchday(matchday: Matchday): Observable<Matchday> {
         return this.http
             .put(`${MATCHES_API}/${matchday.id}`, matchday)
-            .map((response: Response) => response.json());
+            .map((response: Response) => response.json())
+            .catch((error: any) => Observable.throw(error.json()));
     }
 
     deleteMatchday(matchday: Matchday): Observable<Matchday> {
         return this.http
             .delete(`${MATCHES_API}/${matchday.id}`)
-            .map((response: Response) => response.json());
+            .map((response: Response) => response.json())
+            .catch((error: any) => Observable.throw(error.json()));
     }
 
 
@@ -82,7 +95,8 @@ export class PremierLeagueService {
     editMatch(match: Match): Observable<Match> {
         return this.http
             .put(`${MATCHES_API}/${match.id}`, match)
-            .map((response: Response) => response.json());
+            .map((response: Response) => response.json())
+            .catch((error: any) => Observable.throw(error.json()));
     }
 
 
@@ -91,13 +105,15 @@ export class PremierLeagueService {
     getSettings(): Observable<Settings> {
         return this.http
             .get(`${SETTINGS_API}/1`)
-            .map((response: Response) => response.json());
+            .map((response: Response) => response.json())
+            .catch((error: any) => Observable.throw(error.json()));
     }
 
     editSettings(settings: Settings): Observable<Settings> {
         return this.http
             .put(`${SETTINGS_API}/1`, settings)
-            .map((response: Response) => response.json());
+            .map((response: Response) => response.json())
+            .catch((error: any) => Observable.throw(error.json()));
     }
 
     returnPremierLeagueClubs() {

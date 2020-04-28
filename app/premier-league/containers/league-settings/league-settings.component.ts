@@ -55,7 +55,7 @@ export class LeagueSettingsComponent implements OnInit {
 
     teams: Team[];
     matches: Matchday[];
-    hasSeasonStarted: Settings;
+    settings: Settings;
 
     ngOnInit() {
         this.premierLeagueService
@@ -68,7 +68,7 @@ export class LeagueSettingsComponent implements OnInit {
 
         this.premierLeagueService
             .getSettings()
-            .subscribe((data: Settings) => this.hasSeasonStarted = data);
+            .subscribe((data: Settings) => this.settings = data);
     }
 
     startSeason() {
@@ -172,11 +172,16 @@ export class LeagueSettingsComponent implements OnInit {
                     matchday.matches.push(match);
                     reversedMatchday.matches.push(reversedMatch);
 
-                    // console.log(reversedMatch);
-
                     swapTeams = !swapTeams;
 
                 } while(teams.length)
+
+                // add quantity of matches to the settings 
+                // multiplied by 2, because we will away and home game
+
+                // this.settings.matchesRemain += matchday.matches.length * 2;
+
+                // this.premierLeagueService.editSettings(this.settings).subscribe(() => {});
 
                 // adding matchday to DB
                 this.premierLeagueService
@@ -291,10 +296,10 @@ export class LeagueSettingsComponent implements OnInit {
             })
         }
 
-        this.hasSeasonStarted.hasSeasonStarted = true;
+        this.settings.hasSeasonStarted = true;
 
         this.premierLeagueService
-            .editSettings(this.hasSeasonStarted)
+            .editSettings(this.settings)
             .subscribe((data: Settings) => {});
     }
 
@@ -315,10 +320,10 @@ export class LeagueSettingsComponent implements OnInit {
                 });
         })
 
-        this.hasSeasonStarted.hasSeasonStarted = false;
+        this.settings.hasSeasonStarted = false;
 
         this.premierLeagueService
-            .editSettings(this.hasSeasonStarted)
+            .editSettings(this.settings)
             .subscribe((data: Settings) => {});
     }
 }
