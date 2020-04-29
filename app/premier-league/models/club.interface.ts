@@ -4,3 +4,4 @@ export interface Club {
     venue: string,
     city: string
 }
+

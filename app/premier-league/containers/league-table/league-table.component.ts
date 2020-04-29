@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { PremierLeagueService } from '../../premier-league.service';
 import { Team } from '../../models/team.interface';
 import { Settings } from '../../models/settings.interface';
+import { Matchday } from '../../models/matchday.interface';
+import { Match } from '../../models/match.interface';
 
 @Component({
     selector: 'league-table',
@@ -80,6 +82,7 @@ import { Settings } from '../../models/settings.interface';
 export class LeagueTableComponent implements OnInit {
     teams: Team[];
     sortedTeams: Team[];
+    matches: Matchday[];
     team: Team;
     seasonSettings: Settings;
 
@@ -91,38 +94,22 @@ export class LeagueTableComponent implements OnInit {
             .subscribe((data: Team[]) => this.teams = data);
 
         this.premierLeagueService
-            .getAllTeams()
-            .subscribe((data: Team[]) => {
-                this.sortedTeams = data;
-
-                this.sortedTeams.sort((a: Team, b: Team) => {
-                    return b.points - a.points;
-                })
-
-                this.sortedTeams.sort((a: Team, b: Team) => {
-                    if (b.points === a.points) {
-                        return (b.goalsScored - b.goalsConceded) - (a.goalsScored - a.goalsConceded);
-                    }
-                })
-
-                this.sortedTeams.sort((a: Team, b: Team) => {
-                    if (b.points === a.points) {
-                        if (b.goalsScored - b.goalsConceded === a.goalsScored - a.goalsConceded) {
-                            return b.goalsScored - a.goalsScored;
-                        }
-                    }
-                })
-            })
+            .getAllMatchdays()
+            .subscribe((data: Matchday[]) => this.matches = data);
 
         this.premierLeagueService
             .getAllTeams()
-            .subscribe((data: Team[]) => this.teams = data);    
+            .subscribe((data: Team[]) => this.sortedTeams = data);  
 
         this.premierLeagueService
             .getSettings()
             .subscribe((data: Settings) => {
                 this.seasonSettings = data;
             });
+
+        setTimeout(() => {
+            this.sortTeams();
+        }, 100); 
     }
 
     addTeam(team: Team) {
@@ -155,5 +142,88 @@ export class LeagueTableComponent implements OnInit {
                     }
                 })
             });
+    }
+
+    sortTeams() {
+        let performanceTime = performance.now();
+
+        
+        // setting table
+
+        this.sortedTeams = this.sortedTeams.map((team: Team) => {
+
+            this.matches.forEach((matchday: Matchday) => {
+                matchday.matches.forEach((match: Match) => {
+                    if (match.awayTeamScore && match.homeTeamScore) {
+                        if (team.id === match.homeTeamID) {
+
+                            // games played
+                            team.gamesPlayed++;
+
+                            // games won | drawn | lost  |  points 
+                            if (match.homeTeamScore > match.awayTeamScore) {
+                                team.gamesWon++;
+                                team.points += 3;
+                            } else if (match.homeTeamScore === match.awayTeamScore) {
+                                team.gamesDrawn++;
+                                team.points++;
+                            } else {
+                                team.gamesLost++;
+                            }
+
+                            // goals scored | conceded
+                            team.goalsScored += +match.homeTeamScore;
+                            team.goalsConceded += +match.awayTeamScore;
+
+                        } else if (team.id === match.awayTeamID) {
+                            
+                            // games played
+                            team.gamesPlayed++;
+
+                            // games won | drawn | lost  |  points
+                            if (match.awayTeamScore > match.homeTeamScore) {
+                                team.gamesWon++;
+                                team.points += 3;
+                            } else if (match.awayTeamScore === match.homeTeamScore) {
+                                team.gamesDrawn++;
+                                team.points++
+                            } else {
+                                team.gamesLost;
+                            }
+
+                            // goals scored | conceded
+                            team.goalsScored += +match.awayTeamScore;
+                            team.goalsConceded += +match.homeTeamScore;
+                        }
+                    }
+                })
+            })
+
+            return team;
+        });
+
+
+
+        // sort algorithm
+
+        this.sortedTeams.sort((a: Team, b: Team) => {
+            return b.points - a.points;
+        })
+
+        this.sortedTeams.sort((a: Team, b: Team) => {
+            if (b.points === a.points) {
+                return (b.goalsScored - b.goalsConceded) - (a.goalsScored - a.goalsConceded);
+            }
+        })
+
+        this.sortedTeams.sort((a: Team, b: Team) => {
+            if (b.points === a.points) {
+                if (b.goalsScored - b.goalsConceded === a.goalsScored - a.goalsConceded) {
+                    return b.goalsScored - a.goalsScored;
+                }
+            }
+        })
+
+        console.log(`Execution time: ${(performance.now() - performanceTime).toFixed(3)}`);
     }
 }

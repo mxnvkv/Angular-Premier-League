@@ -3,6 +3,7 @@ import { Match } from '../../models/match.interface';
 import { Matchday } from '../../models/matchday.interface';
 import { PremierLeagueService } from '../../premier-league.service';
 import { Team } from '../../models/team.interface';
+import { forkJoin } from 'rxjs/observable/forkJoin';
 
 @Component({
     selector: 'match-item',
@@ -103,7 +104,7 @@ import { Team } from '../../models/team.interface';
                     !submittedScore.homeTeamScore && submittedScore.awayTeamScore
                     || submittedScore.homeTeamScore && !submittedScore.awayTeamScore
                 "
-                (click)="setScore(); toggleSettingScore()">
+                (click)="setScore(); toggleSettingScore();">
                 Save
             </button>
         </div>
@@ -158,7 +159,7 @@ export class MatchItemComponent implements OnInit {
         if (this.submittedScore.homeTeamScore && this.submittedScore.awayTeamScore) {
             this.match = { ...this.match, ...this.submittedScore };
 
-            this.updateTeams();
+            // this.updateTeams();
 
             this.matchday.matches = this.matchday.matches.map((el: Match) => {
                 if (el.id === this.match.id) {
@@ -214,6 +215,7 @@ export class MatchItemComponent implements OnInit {
         this.awayTeam.goalsScored += +this.match.awayTeamScore;
         this.awayTeam.goalsConceded += +this.match.homeTeamScore;
 
+        
         this.premierLeagueService
             .editTeam(this.homeTeam)
             .subscribe((data: Team) => {
@@ -224,7 +226,9 @@ export class MatchItemComponent implements OnInit {
                     return team;
                 })
             })
+    
 
+    
         this.premierLeagueService
             .editTeam(this.awayTeam)
             .subscribe((data: Team) => {

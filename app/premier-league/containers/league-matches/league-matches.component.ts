@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PremierLeagueService } from '../../premier-league.service';
 import { Matchday } from '../../models/matchday.interface';
 import { Match } from '../../models/match.interface';
+import { Team } from '../../models/team.interface';
 
 @Component({
     selector: 'league-matches',
@@ -49,29 +50,5 @@ export class LeagueMatchesComponent implements OnInit{
                     return el;
                 })
             })
-    }
-
-    submitScore(match: Match) {
-        // setTimeout(() => {
-        //     this.premierLeagueService
-        //         .editMatchday(this.currentMatchday)
-        //         .subscribe((data: Matchday) => {
-
-        //             this.matches = this.matches.map((el: Matchday) => {
-        //                 if (el.id === this.currentMatchday.id) {
-        //                     el.matches = el.matches.map((m: Match) => {
-        //                         m.homeTeam.name = 'test';
-        //                         return m;
-        //                     })
-        //                 }
-        //                 return el;
-        //             })
-                    
-        //         });
-        // }, 100)
-    }
-
-    getMatchday(matchday: Matchday) {
-        // this.currentMatchday = matchday;
     }
 }
