@@ -31,7 +31,15 @@ import { Match } from '../../models/match.interface';
         <div
             *ngIf="seasonSettings?.hasSeasonStarted"
             class="league-table">
-            <table class="table">
+
+            <div
+                *ngIf="isLoading">
+                Loading...
+            </div>
+
+            <table
+                *ngIf="!isLoading" 
+                class="table">
                 <tr>
                     <th>Position</th>
                     <th class="club">Club</th>
@@ -49,9 +57,16 @@ import { Match } from '../../models/match.interface';
                     class="teams"
                     [ngClass]="{
                         'red': i % 2 === 0,
-                        'dark-red': i % 2 !== 0
+                        'dark-red': i % 2 !== 0,
+                        'champion': hasSeasonEnded && i === 0
                     }">
-                    <td class="bold"> {{ i + 1 }} </td>
+                    <td 
+                        class="bold"
+                        [ngClass]="{
+                            'trophy': hasSeasonEnded && i === 0
+                        }"> 
+                        {{ hasSeasonEnded && i === 0 ? '🏆' : i + 1 }} 
+                    </td>
                     <td class="club-td"> 
                         <div 
                             class="club-logo"
@@ -83,8 +98,10 @@ export class LeagueTableComponent implements OnInit {
     teams: Team[];
     sortedTeams: Team[];
     matches: Matchday[];
+    hasSeasonEnded: boolean = false;
     team: Team;
     seasonSettings: Settings;
+    isLoading: boolean = true;
 
     constructor(private premierLeagueService: PremierLeagueService) {}
 
@@ -95,7 +112,26 @@ export class LeagueTableComponent implements OnInit {
 
         this.premierLeagueService
             .getAllMatchdays()
-            .subscribe((data: Matchday[]) => this.matches = data);
+            .subscribe((data: Matchday[]) => {
+                this.matches = data
+
+                let totalMatches = 0;
+                let completedMatches = 0;
+
+                data.forEach((matchday: Matchday) => {
+                    matchday.matches.forEach((match: Match) => {
+                        totalMatches++;
+
+                        if (match.awayTeamScore && match.homeTeamScore) {
+                            completedMatches++;
+                        }
+                    })
+                })
+
+                if (completedMatches === totalMatches) {
+                    this.hasSeasonEnded = true;
+                }
+            });
 
         this.premierLeagueService
             .getAllTeams()
@@ -109,7 +145,7 @@ export class LeagueTableComponent implements OnInit {
 
         setTimeout(() => {
             this.sortTeams();
-        }, 100); 
+        }, 250); 
     }
 
     addTeam(team: Team) {
@@ -188,7 +224,7 @@ export class LeagueTableComponent implements OnInit {
                                 team.gamesDrawn++;
                                 team.points++
                             } else {
-                                team.gamesLost;
+                                team.gamesLost++;
                             }
 
                             // goals scored | conceded
@@ -225,5 +261,6 @@ export class LeagueTableComponent implements OnInit {
         })
 
         console.log(`Execution time: ${(performance.now() - performanceTime).toFixed(3)}`);
+        this.isLoading = false;
     }
 }

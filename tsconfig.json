@@ -7,7 +7,7 @@
     "pretty": true,
     "sourceMap": true,
     "lib": ["es5", "dom"],
-    "strictNullChecks": false,
+    "strictNullChecks": false
   },
   "exclude": [
     "node_modules"

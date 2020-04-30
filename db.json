@@ -1,10 +1,218 @@
 {
-  "teams": [],
+  "teams": [
+    {
+      "name": "team 1",
+      "club": {
+        "clubName": "Everton",
+        "logoURL": "/img/clubs/everton.png",
+        "venue": "Goodison Park",
+        "city": "Liverpool"
+      },
+      "gamesPlayed": 0,
+      "gamesWon": 0,
+      "gamesDrawn": 0,
+      "gamesLost": 0,
+      "goalsScored": 0,
+      "goalsConceded": 0,
+      "points": 0,
+      "id": "f8b1fe10-8b15-11ea-9014-3da38585316f"
+    },
+    {
+      "name": "team 2",
+      "club": {
+        "clubName": "Manchester United",
+        "logoURL": "/img/clubs/manchester_united.png",
+        "venue": "Old Trafford",
+        "city": "Manchester"
+      },
+      "gamesPlayed": 0,
+      "gamesWon": 0,
+      "gamesDrawn": 0,
+      "gamesLost": 0,
+      "goalsScored": 0,
+      "goalsConceded": 0,
+      "points": 0,
+      "id": "fba155d0-8b15-11ea-9014-3da38585316f"
+    },
+    {
+      "name": "team 3",
+      "club": {
+        "clubName": "Tottenham",
+        "logoURL": "/img/clubs/tottenham_hotspur.png",
+        "venue": "Tottenham Hotspur Stadium",
+        "city": "London"
+      },
+      "gamesPlayed": 0,
+      "gamesWon": 0,
+      "gamesDrawn": 0,
+      "gamesLost": 0,
+      "goalsScored": 0,
+      "goalsConceded": 0,
+      "points": 0,
+      "id": "fe184940-8b15-11ea-9014-3da38585316f"
+    },
+    {
+      "name": "team 4",
+      "club": {
+        "clubName": "Liverpool",
+        "logoURL": "/img/clubs/liverpool.png",
+        "venue": "Anfield",
+        "city": "Liverpool"
+      },
+      "gamesPlayed": 0,
+      "gamesWon": 0,
+      "gamesDrawn": 0,
+      "gamesLost": 0,
+      "goalsScored": 0,
+      "goalsConceded": 0,
+      "points": 0,
+      "id": "01f6bbf0-8b16-11ea-9014-3da38585316f"
+    }
+  ],
   "settings": [
     {
-      "hasSeasonStarted": false,
+      "hasSeasonStarted": true,
       "id": "1"
     }
   ],
-  "matches": []
+  "matches": [
+    {
+      "id": "02c97540-8b16-11ea-9014-3da38585316f",
+      "matches": [
+        {
+          "homeTeamID": "fe184940-8b15-11ea-9014-3da38585316f",
+          "awayTeamID": "01f6bbf0-8b16-11ea-9014-3da38585316f",
+          "venue": "Tottenham Hotspur Stadium",
+          "city": "London",
+          "id": "02c97542-8b16-11ea-9014-3da38585316f",
+          "homeTeamScore": "2",
+          "awayTeamScore": "2"
+        },
+        {
+          "homeTeamID": "fba155d0-8b15-11ea-9014-3da38585316f",
+          "awayTeamID": "f8b1fe10-8b15-11ea-9014-3da38585316f",
+          "venue": "Old Trafford",
+          "city": "Manchester",
+          "id": "02c97544-8b16-11ea-9014-3da38585316f",
+          "homeTeamScore": "2",
+          "awayTeamScore": "1"
+        }
+      ]
+    },
+    {
+      "id": "02c99c50-8b16-11ea-9014-3da38585316f",
+      "matches": [
+        {
+          "homeTeamID": "fba155d0-8b15-11ea-9014-3da38585316f",
+          "awayTeamID": "fe184940-8b15-11ea-9014-3da38585316f",
+          "venue": "Old Trafford",
+          "city": "Manchester",
+          "id": "02c99c52-8b16-11ea-9014-3da38585316f",
+          "homeTeamScore": "2",
+          "awayTeamScore": "1"
+        },
+        {
+          "homeTeamID": "f8b1fe10-8b15-11ea-9014-3da38585316f",
+          "awayTeamID": "01f6bbf0-8b16-11ea-9014-3da38585316f",
+          "venue": "Goodison Park",
+          "city": "Liverpool",
+          "id": "02c99c54-8b16-11ea-9014-3da38585316f",
+          "homeTeamScore": "2",
+          "awayTeamScore": "2"
+        }
+      ]
+    },
+    {
+      "id": "02c9c360-8b16-11ea-9014-3da38585316f",
+      "matches": [
+        {
+          "homeTeamID": "fe184940-8b15-11ea-9014-3da38585316f",
+          "awayTeamID": "f8b1fe10-8b15-11ea-9014-3da38585316f",
+          "venue": "Tottenham Hotspur Stadium",
+          "city": "London",
+          "id": "02c9ea71-8b16-11ea-9014-3da38585316f",
+          "homeTeamScore": "1",
+          "awayTeamScore": "1"
+        },
+        {
+          "homeTeamID": "01f6bbf0-8b16-11ea-9014-3da38585316f",
+          "awayTeamID": "fba155d0-8b15-11ea-9014-3da38585316f",
+          "venue": "Anfield",
+          "city": "Liverpool",
+          "id": "02c9ea73-8b16-11ea-9014-3da38585316f",
+          "homeTeamScore": "2",
+          "awayTeamScore": "1"
+        }
+      ]
+    },
+    {
+      "id": "02c97541-8b16-11ea-9014-3da38585316f",
+      "matches": [
+        {
+          "homeTeamID": "01f6bbf0-8b16-11ea-9014-3da38585316f",
+          "awayTeamID": "fe184940-8b15-11ea-9014-3da38585316f",
+          "venue": "Anfield",
+          "city": "Liverpool",
+          "id": "02c97543-8b16-11ea-9014-3da38585316f",
+          "homeTeamScore": "2",
+          "awayTeamScore": "2"
+        },
+        {
+          "homeTeamID": "f8b1fe10-8b15-11ea-9014-3da38585316f",
+          "awayTeamID": "fba155d0-8b15-11ea-9014-3da38585316f",
+          "venue": "Goodison Park",
+          "city": "Liverpool",
+          "id": "02c97545-8b16-11ea-9014-3da38585316f",
+          "homeTeamScore": "2",
+          "awayTeamScore": "1"
+        }
+      ]
+    },
+    {
+      "id": "02c99c51-8b16-11ea-9014-3da38585316f",
+      "matches": [
+        {
+          "homeTeamID": "fe184940-8b15-11ea-9014-3da38585316f",
+          "awayTeamID": "fba155d0-8b15-11ea-9014-3da38585316f",
+          "venue": "Tottenham Hotspur Stadium",
+          "city": "London",
+          "id": "02c99c53-8b16-11ea-9014-3da38585316f",
+          "homeTeamScore": "2",
+          "awayTeamScore": "1"
+        },
+        {
+          "homeTeamID": "01f6bbf0-8b16-11ea-9014-3da38585316f",
+          "awayTeamID": "f8b1fe10-8b15-11ea-9014-3da38585316f",
+          "venue": "Anfield",
+          "city": "Liverpool",
+          "id": "02c99c55-8b16-11ea-9014-3da38585316f",
+          "homeTeamScore": "2",
+          "awayTeamScore": "1"
+        }
+      ]
+    },
+    {
+      "id": "02c9ea70-8b16-11ea-9014-3da38585316f",
+      "matches": [
+        {
+          "homeTeamID": "f8b1fe10-8b15-11ea-9014-3da38585316f",
+          "awayTeamID": "fe184940-8b15-11ea-9014-3da38585316f",
+          "venue": "Goodison Park",
+          "city": "Liverpool",
+          "id": "02c9ea72-8b16-11ea-9014-3da38585316f",
+          "homeTeamScore": "2",
+          "awayTeamScore": "2"
+        },
+        {
+          "homeTeamID": "fba155d0-8b15-11ea-9014-3da38585316f",
+          "awayTeamID": "01f6bbf0-8b16-11ea-9014-3da38585316f",
+          "venue": "Old Trafford",
+          "city": "Manchester",
+          "id": "02c9ea74-8b16-11ea-9014-3da38585316f",
+          "homeTeamScore": "1",
+          "awayTeamScore": "1"
+        }
+      ]
+    }
+  ]
 }
