@@ -14,9 +14,26 @@ import { Settings } from '../../models/settings.interface';
 
             <div class="start-season">
                 <div class="container">
-                    <h2>Start season</h2>
+                    <h2>
+                        {{ 
+                            hasSeasonFinished ? 'Season is finished!' :
+                            settings?.hasSeasonStarted ? 'Season is going' : 'Start season'
+                        }}
+                    </h2>
 
-                    <button (click)="startSeason()">Let's go!</button>
+                    <button 
+                        *ngIf="!settings?.hasSeasonStarted"
+                        [disabled]="teams?.length <= 1"
+                        (click)="startSeason()">
+                        Let's go!
+                    </button>
+
+                    <progress
+                        max="100"
+                        [value]="progress"
+                        *ngIf="settings?.hasSeasonStarted && !hasSeasonFinished"
+                        class="progressbar">
+                    </progress>
                 </div>
 
                 <img class="background" src="/img/header-bg.png">
@@ -56,6 +73,8 @@ export class LeagueSettingsComponent implements OnInit {
     teams: Team[];
     matches: Matchday[];
     settings: Settings;
+    hasSeasonFinished: boolean = false;
+    progress: number = 0;
 
     ngOnInit() {
         this.premierLeagueService
@@ -64,7 +83,32 @@ export class LeagueSettingsComponent implements OnInit {
 
         this.premierLeagueService
             .getAllMatchdays()
-            .subscribe((data: Matchday[]) => this.matches = data)
+            .subscribe((data: Matchday[]) => {
+                this.matches = data;
+
+                let totalMatches = 0;
+                let completedMatches = 0;
+
+                data.forEach((matchday: Matchday) => {
+                    matchday.matches.forEach((match: Match) => {
+                        totalMatches++;
+
+                        if (match.awayTeamScore && match.homeTeamScore) {
+                            completedMatches++;
+                        }
+                    })
+                })
+
+                if (completedMatches === totalMatches && totalMatches !== 0) {
+                    this.hasSeasonFinished = true;
+                }
+
+                setTimeout(() => {
+                    if (totalMatches !== 0) {
+                        this.progress = completedMatches * 100 / totalMatches;
+                    }
+                }, 100); 
+            })
 
         this.premierLeagueService
             .getSettings()
@@ -321,6 +365,7 @@ export class LeagueSettingsComponent implements OnInit {
         })
 
         this.settings.hasSeasonStarted = false;
+        this.hasSeasonFinished = false;
 
         this.premierLeagueService
             .editSettings(this.settings)
