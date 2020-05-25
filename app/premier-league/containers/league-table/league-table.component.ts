@@ -240,23 +240,17 @@ export class LeagueTableComponent implements OnInit {
 
 
 
-        // sort algorithm
-
-        this.sortedTeams.sort((a: Team, b: Team) => {
-            return b.points - a.points;
-        })
-
-        this.sortedTeams.sort((a: Team, b: Team) => {
-            if (b.points === a.points) {
-                return (b.goalsScored - b.goalsConceded) - (a.goalsScored - a.goalsConceded);
-            }
-        })
+        // sorting algorithm
 
         this.sortedTeams.sort((a: Team, b: Team) => {
             if (b.points === a.points) {
                 if (b.goalsScored - b.goalsConceded === a.goalsScored - a.goalsConceded) {
                     return b.goalsScored - a.goalsScored;
+                } else {
+                    return (b.goalsScored - b.goalsConceded) - (a.goalsScored - a.goalsConceded);
                 }
+            } else {
+                return b.points - a.points;
             }
         })
 

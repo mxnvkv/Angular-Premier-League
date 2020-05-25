@@ -172,8 +172,6 @@ export class MatchItemComponent implements OnInit {
         if (this.submittedScore.homeTeamScore && this.submittedScore.awayTeamScore) {
             this.match = { ...this.match, ...this.submittedScore };
 
-            // this.updateTeams();
-
             this.matchday.matches = this.matchday.matches.map((el: Match) => {
                 if (el.id === this.match.id) {
                     el = Object.assign({}, el, this.match);
@@ -188,69 +186,5 @@ export class MatchItemComponent implements OnInit {
 
     toggleSettingScore() {
         this.settingScore = !this.settingScore;
-    }
-
-    updateTeams() {
-        this.homeTeam.gamesPlayed++;
-        this.awayTeam.gamesPlayed++;
-
-        // result
-
-        if (this.match.homeTeamScore > this.match.awayTeamScore) {
-
-            this.homeTeam.gamesWon++;
-            this.awayTeam.gamesLost++;
-
-            this.homeTeam.points += 3;
-
-        } else if (this.match.homeTeamScore === this.match.awayTeamScore) {
-
-            this.homeTeam.gamesDrawn++;
-            this.awayTeam.gamesDrawn++;
-
-            this.homeTeam.points++;
-            this.awayTeam.points++;
-
-        } else {
-
-            this.homeTeam.gamesLost++;
-            this.awayTeam.gamesWon++;
-
-            this.awayTeam.points += 3;
-
-        }
-
-        // goals
-
-        this.homeTeam.goalsScored += +this.match.homeTeamScore;
-        this.homeTeam.goalsConceded += +this.match.awayTeamScore;
-
-        this.awayTeam.goalsScored += +this.match.awayTeamScore;
-        this.awayTeam.goalsConceded += +this.match.homeTeamScore;
-
-        
-        this.premierLeagueService
-            .editTeam(this.homeTeam)
-            .subscribe((data: Team) => {
-                this.teams = this.teams.map((team: Team) => {
-                    if (team.id === this.homeTeam.id) {
-                        team = Object.assign({}, team, this.homeTeam);
-                    }
-                    return team;
-                })
-            })
-    
-
-    
-        this.premierLeagueService
-            .editTeam(this.awayTeam)
-            .subscribe((data: Team) => {
-                this.teams = this.teams.map((team: Team) => {
-                    if (team.id === this.awayTeam.id) {
-                        team = Object.assign({}, team, this.awayTeam);
-                    }
-                    return team;
-                })
-            })
     }
 }

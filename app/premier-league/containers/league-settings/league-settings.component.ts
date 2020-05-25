@@ -53,17 +53,6 @@ import { Settings } from '../../models/settings.interface';
                 </button>
             </div>
         </div>
-
-        <!-- <div 
-            class="schedule"
-            *ngFor="let matchday of matches; let i = index">
-            Matchday {{ i + 1 }}
-            <br>
-            <div
-                *ngFor="let match of matchday.matches">
-                {{ match.homeTeam.name }} - {{ match.awayTeam.name }}
-            </div>
-        </div>  -->
     `
 })
 
@@ -219,13 +208,6 @@ export class LeagueSettingsComponent implements OnInit {
                     swapTeams = !swapTeams;
 
                 } while(teams.length)
-
-                // add quantity of matches to the settings 
-                // multiplied by 2, because we will away and home game
-
-                // this.settings.matchesRemain += matchday.matches.length * 2;
-
-                // this.premierLeagueService.editSettings(this.settings).subscribe(() => {});
 
                 // adding matchday to DB
                 this.premierLeagueService
