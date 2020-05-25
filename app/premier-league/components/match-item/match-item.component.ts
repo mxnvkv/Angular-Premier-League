@@ -103,6 +103,7 @@ import { forkJoin } from 'rxjs/observable/forkJoin';
                 [disabled]="
                     !submittedScore.homeTeamScore && submittedScore.awayTeamScore
                     || submittedScore.homeTeamScore && !submittedScore.awayTeamScore
+                    || !validInputs
                 "
                 (click)="setScore(); toggleSettingScore();">
                 Save
@@ -145,14 +146,26 @@ export class MatchItemComponent implements OnInit {
     awayTeam: Team;
     settingScore: boolean = false;
     submittedScore: Match = {...this.match};
+    validInputs: boolean = true;
+    specialSymbols = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
 
 
     setHomeScore(score: number) {
-        this.submittedScore.homeTeamScore = score;
+        if (isNaN(score) || score % 1 !== 0 || this.specialSymbols.test(score.toString())) {
+            this.validInputs = false;
+        } else {
+            this.submittedScore.homeTeamScore = score;
+            this.validInputs = true;
+        }
     }
 
     setAwayScore(score: number) {
-        this.submittedScore.awayTeamScore = score;
+        if (isNaN(score) || score % 1 !== 0 || this.specialSymbols.test(score.toString())) {
+            this.validInputs = false;
+        } else {
+            this.submittedScore.awayTeamScore = score;
+            this.validInputs = true;
+        }
     }
 
     setScore() {
